@@ -3,263 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>指紋プロファイリング® | 脳の設計図を解読する</title>
-    <meta name="description" content="一生変わらない指紋から、あなたの脳の個性、潜在能力、身体制御能力を可視化。理知的で精密な自己分析ツール。">
+    <title>指紋プロファイリング® | 脳の設計図を解読する人生の羅針盤</title>
+    <meta name="description" content="一生変わらない指紋から、あなたの脳の特性（OS）を可視化。自分らしい人生戦略と、子供の才能を伸ばす教育法を導き出します。">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --brand-indigo: #4f46e5;
-            --brand-lilac: #a29bfe;
-            --text-main: #1a1a1a;
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#6366f1', // プレシジョンブルー
+                            secondary: '#a78bfa', // ライラック
+                            accent: '#f472b6', // ピンク
+                            dark: '#1e1b4b', // インディゴ
+                            light: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    }
+                }
+            }
         }
+    </script>
+
+    <style>
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+        
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            color: var(--text-main);
+            background-color: #ffffff;
+            color: #334155;
             line-height: 1.8;
-            word-break: break-all;
+            overflow-x: hidden;
         }
-        h1, h2, h3 {
-            font-family: 'Noto Serif JP', serif;
-            letter-spacing: 0.05em;
-        }
+
+        h1, h2, h3 { font-family: 'Noto Serif JP', serif; }
+
         .reveal {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
             transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
+
         .prism-bg {
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(162, 155, 254, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.05) 0%, transparent 40%);
-        }
-        .img-container {
+            background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(167,139,250,0.05) 50%, rgba(244,114,182,0.05) 100%);
             position: relative;
-            overflow: hidden;
-            border-radius: 2px;
-            background: #f8fafc;
         }
-        .img-container::after {
-            content: "";
+
+        .prism-bg::before {
+            content: '';
             position: absolute;
-            inset: 0;
-            background-image: linear-gradient(rgba(79, 70, 229, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(79, 70, 229, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("https://www.transparenttextures.com/patterns/cubes.png");
+            opacity: 0.03;
             pointer-events: none;
         }
-        .btn-hover {
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+        .cta-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
         }
-        .btn-hover:hover {
+        .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
         }
-        /* 改行制御 */
-        .br-pc { display: none; }
-        .br-sp { display: block; }
-        @media (min-width: 768px) {
-            .br-pc { display: block; }
-            .br-sp { display: none; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile line control */
+        .br-pc { display: block; }
+        .br-sp { display: none; }
+        @media (max-width: 768px) {
+            .br-pc { display: none; }
+            .br-sp { display: block; }
         }
     </style>
 </head>
-<body class="bg-white prism-bg">
+<body>
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="text-xl font-bold tracking-tighter">
-                指紋プロファイリング<span class="text-xs align-top">®</span>
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 glass-card py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-xl font-bold tracking-tighter text-brand-dark">
+                指紋プロファイリング<span class="text-sm align-top">®</span>
             </div>
-            <a href="https://line.me" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 text-white px-6 py-2.5 text-xs font-bold btn-hover tracking-[0.2em] uppercase">
-                Free Consultation
+            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="hover:text-brand-primary transition-colors">特徴</a>
+                <a href="#mechanism" class="hover:text-brand-primary transition-colors">仕組み</a>
+                <a href="#scene" class="hover:text-brand-primary transition-colors">活用例</a>
+                <a href="#process" class="hover:text-brand-primary transition-colors">流れ</a>
+            </nav>
+            <a href="https://line.me/R/ti/p/%40101jlnls" target="_blank" rel="noopener noreferrer" class="bg-brand-dark text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-brand-primary transition-all">
+                LINE登録
             </a>
         </div>
-    </nav>
+    </header>
 
-    <section class="relative min-h-screen flex items-center pt-24 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
-            <div class="md:col-span-7 reveal">
-                <span class="inline-block text-indigo-500 font-bold tracking-[0.4em] text-[10px] mb-6 uppercase">Biological OS Intelligence</span>
-                <h1 class="text-3xl md:text-5xl lg:text-6xl leading-[1.3] md:leading-[1.15] mb-8 text-slate-900">
-                    不変の「指紋」が教える、<br class="br-pc">
-                    あなたの<span class="text-indigo-600">脳の設計図。</span>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center pt-20 prism-bg overflow-hidden">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="reveal">
+                <span class="inline-block bg-brand-primary/10 text-brand-primary px-4 py-1 rounded-full text-xs font-bold tracking-widest mb-6">PERSONAL BIOMETRICS</span>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-8 text-brand-dark">
+                    努力の方向は、<br>指先に刻まれていた。
                 </h1>
-                <p class="text-gray-600 text-base md:text-lg mb-10 max-w-xl leading-relaxed">
-                    感情や環境に左右されない、一生不変のバイオメトリクス。<br class="br-pc">
-                    思考の癖、身体能力、五感の適性を精密に数値化し、<br class="br-pc">
-                    人生の「最適解」を論理的に解き明かします。
+                <p class="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
+                    「あなたの脳の使い方は、あなたの指紋が知っている」<br>
+                    一生変わらない脳の特性（OS）を可視化し、<br class="br-pc">
+                    あなたと子供のための最短ルートの人生戦略を。
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="https://line.me" class="inline-block bg-slate-900 text-white px-10 py-5 font-bold btn-hover tracking-widest shadow-xl text-center text-sm">
-                        公式LINEで無料相談を受ける
+                    <a href="https://line.me/R/ti/p/%40101jlnls" class="cta-button bg-brand-primary text-white px-8 py-4 rounded-xl font-bold text-center">
+                        LINEで無料相談を予約する
                     </a>
                 </div>
             </div>
-            <div class="md:col-span-5 relative reveal" style="transition-delay: 0.3s;">
-                <div class="img-container shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" alt="Advanced Biometrics Analysis" class="w-full h-[400px] md:h-[600px] object-cover opacity-90">
+            <div class="relative reveal delay-300">
+                <!-- REPLACE: Hero Image -->
+                <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1200&q=80" alt="Brain and Fingerprint Concept" class="w-full h-auto">
                 </div>
-                <div class="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60"></div>
+                <div class="absolute -top-10 -right-10 w-64 h-64 bg-brand-secondary opacity-20 rounded-full blur-3xl animate-pulse"></div>
+                <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-brand-accent opacity-20 rounded-full blur-3xl animate-pulse"></div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 md:py-32 bg-slate-50/50">
-        <div class="max-w-5xl mx-auto px-6 reveal">
-            <div class="text-center mb-16">
-                <h2 class="text-2xl md:text-4xl mb-6">なぜ、努力が空回りしてしまうのか？</h2>
-                <div class="w-12 h-px bg-indigo-600 mx-auto"></div>
+    <!-- Future Section -->
+    <section id="about" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">「自分を知る」ことは、<br class="br-sp">迷いを捨てること。</h2>
+                <p class="text-slate-500">もう、誰かの正解を追いかける必要はありません。</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-10 border border-slate-100 shadow-sm">
-                    <h3 class="text-indigo-600 font-bold mb-4">確信が持てない</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed text-justify">主観的な診断は体調で結果が変わり、<br class="br-pc">どれが「本当の資質」か断定できない。</p>
+                <div class="p-8 rounded-3xl glass-card border-slate-100 reveal delay-100">
+                    <div class="w-12 h-12 bg-brand-primary/10 rounded-2xl flex items-center justify-center mb-6 text-brand-primary text-2xl">🎯</div>
+                    <h3 class="text-xl font-bold mb-4">ビジネスの適性</h3>
+                    <p class="text-sm text-slate-600">あなたの思考特性に適した働き方、意思決定の癖を理解し、ストレスなく結果を出す戦略を構築します。</p>
                 </div>
-                <div class="bg-white p-10 border border-slate-100 shadow-sm">
-                    <h3 class="text-indigo-600 font-bold mb-4">適性が不明確</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed text-justify">仕事や子供の教育環境を、<br class="br-pc">「なんとなく」ではなく数値で選びたい。</p>
+                <div class="p-8 rounded-3xl glass-card border-slate-100 reveal delay-200">
+                    <div class="w-12 h-12 bg-brand-secondary/10 rounded-2xl flex items-center justify-center mb-6 text-brand-secondary text-2xl">✨</div>
+                    <h3 class="text-xl font-bold mb-4">愛する子の才能</h3>
+                    <p class="text-sm text-slate-600">我が子が生まれ持った才能を早期に発見。得意な「情報の取り込み方」を知ることで、無理のない教育が可能に。</p>
                 </div>
-                <div class="bg-white p-10 border border-slate-100 shadow-sm">
-                    <h3 class="text-indigo-600 font-bold mb-4">成果が出ない</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed text-justify">自分の脳の特性（OS）に合わない<br class="br-pc">努力を重ねることで、心身を疲弊させる。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 md:py-32">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="order-2 md:order-1 reveal">
-                    <div class="img-container shadow-xl">
-                        <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1000" alt="Neurological Mapping" class="w-full h-[400px] md:h-[500px] object-cover">
-                    </div>
-                </div>
-                <div class="order-1 md:order-2 reveal" style="transition-delay: 0.2s;">
-                    <h2 class="text-3xl md:text-4xl mb-8 leading-tight">指紋は、あなたの脳を<br class="br-pc">映し出す「外部メモリ」</h2>
-                    <p class="text-gray-600 mb-10 leading-relaxed text-justify">
-                        指紋と脳は胎児期に同時に形成されます。<br class="br-pc">
-                        指紋プロファイリング®は、心理学的な質問ではなく、<br class="br-pc">
-                        「身体データ」という物理的な証拠から、<br class="br-pc">
-                        あなたの脳が本来持つポテンシャルを解読します。
-                    </p>
-                    <div class="space-y-8">
-                        <div class="group">
-                            <h4 class="font-bold text-slate-800 flex items-center gap-3 mb-2">
-                                <span class="w-8 h-px bg-indigo-600"></span> 身体制御能力
-                            </h4>
-                            <p class="text-xs text-gray-400 pl-11">運動神経・微細な手先の器用さ・反射の適性</p>
-                        </div>
-                        <div class="group">
-                            <h4 class="font-bold text-slate-800 flex items-center gap-3 mb-2">
-                                <span class="w-8 h-px bg-indigo-600"></span> 聴覚・言語能力
-                            </h4>
-                            <p class="text-xs text-gray-400 pl-11">言語の論理処理・音の感性・音楽的受容能力</p>
-                        </div>
-                        <div class="group">
-                            <h4 class="font-bold text-slate-800 flex items-center gap-3 mb-2">
-                                <span class="w-8 h-px bg-indigo-600"></span> 視覚・認識能力
-                            </h4>
-                            <p class="text-xs text-gray-400 pl-11">空間把握・色彩感覚・シンボルや文字の識別速度</p>
-                        </div>
-                    </div>
+                <div class="p-8 rounded-3xl glass-card border-slate-100 reveal delay-300">
+                    <div class="w-12 h-12 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-6 text-brand-accent text-2xl">🌱</div>
+                    <h3 class="text-xl font-bold mb-4">人間関係のストレス軽減</h3>
+                    <p class="text-sm text-slate-600">自分と他人の「OSの違い」を理解することで、コミュニケーションの摩擦を解消し、深い自己肯定感を育みます。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 bg-slate-900 text-white">
-        <div class="max-w-7xl mx-auto px-6 reveal">
-            <div class="grid md:grid-cols-3 gap-16">
-                <div>
-                    <h3 class="text-xl font-bold mb-6 text-indigo-400">01. Precision</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        一生変わらない「身体情報」が根拠。<br class="br-pc">
-                        気分で揺らぐことのない、<br class="br-pc">
-                        精密なバイオメトリクス分析です。
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-6 text-indigo-400">02. Universal</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        子供の才能発掘から大人の適職選定、<br class="br-pc">
-                        高齢期の自己理解まで。<br class="br-pc">
-                        全世代に「人生の攻略図」を提示します。
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-6 text-indigo-400">03. Teaching</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        分析結果をどう活かすか。<br class="br-pc">
-                        あなたの脳の設計に合わせた、<br class="br-pc">
-                        具体的な生存戦略を指導します。
-                    </p>
+    <!-- Mechanism Section -->
+    <section id="mechanism" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2 reveal">
+                <!-- REPLACE: Mechanism Image -->
+                <img src="https://images.unsplash.com/photo-1614728263952-84ea206f99b6?auto=format&fit=crop&w=1000&q=80" alt="Fingerprint Analysis" class="rounded-3xl shadow-lg">
+            </div>
+            <div class="md:w-1/2 reveal delay-200">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">なぜ「指紋」が<br>「脳の設計図」なのか？</h2>
+                <p class="mb-6 leading-relaxed">
+                    指紋は妊娠13週から24週にかけて、胎児の脳の発達とほぼ同時期に形成されます。この形成プロセスの相関関係に着目し、数多の指紋データと特性の相関性を紐解いたのが「指紋プロファイリング®」です。
+                </p>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand-primary mt-1">✓</span>
+                        <span><b>身体情報の科学：</b> 主観的な回答に依存しない客観データ</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand-primary mt-1">✓</span>
+                        <span><b>3つのバランス：</b> 身体制御・聴覚・視覚の優位性を数値化</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand-primary mt-1">✓</span>
+                        <span><b>不変のデータ：</b> 一生変わらないからこそ、長期の戦略が描ける</span>
+                    </li>
+                </ul>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 text-sm italic text-slate-500">
+                    ※指紋プロファイリング®は医学的に立証された診断ではありません。長年の指紋データと個人の特性に基づいた統計的なアプローチによる自己理解ツールです。
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 md:py-32">
-        <div class="max-w-3xl mx-auto px-6 reveal">
-            <h2 class="text-3xl text-center mb-20 font-bold">Process</h2>
-            <div class="space-y-12 relative border-l border-slate-100 ml-4 md:ml-0">
-                <div class="flex gap-8 relative pl-8">
-                    <span class="absolute -left-3 top-0 w-6 h-6 bg-indigo-600 rounded-full border-4 border-white"></span>
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="bg-brand-dark rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
+                <div class="relative z-10 reveal">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-8">まずは、あなたの指先に<br class="br-sp">刻まれた可能性を知ることから。</h2>
+                    <p class="text-lg opacity-80 mb-12">公式LINEにて、初回相談のご予約を承っております。</p>
+                    <a href="https://line.me/R/ti/p/%40101jlnls" class="cta-button inline-block bg-white text-brand-dark px-10 py-5 rounded-full font-bold text-lg">
+                        公式LINEを追加する
+                    </a>
+                </div>
+                <div class="absolute top-0 right-0 w-96 h-96 bg-brand-primary opacity-10 rounded-full blur-[100px]"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-secondary opacity-10 rounded-full blur-[100px]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene Section -->
+    <section id="scene" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 reveal">活用シーン</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <div class="mb-6 rounded-2xl overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&q=80" alt="Parenting" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">子育て：才能を輝かせる</h3>
+                    <p class="text-slate-600">「なぜ、うちの子は話を聞かないの？」その理由は、聴覚よりも視覚で情報を取るタイプだからかもしれません。脳の癖を知ることで、叱る回数が減り、褒めどころが明確になります。</p>
+                </div>
+                <div class="reveal delay-200">
+                    <div class="mb-6 rounded-2xl overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Business" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">ビジネス：強みを武器にする</h3>
+                    <p class="text-slate-600">自分の「OS」に合わない環境で努力しても、パフォーマンスは上がりません。生まれ持ったリーダーシップや分析力、実行力のバランスを知ることで、最適なキャリア形成を実現します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-24 bg-brand-light">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 reveal">体験のステップ</h2>
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm reveal">
+                    <div class="w-12 h-12 bg-brand-primary text-white flex items-center justify-center rounded-full font-bold flex-shrink-0">1</div>
                     <div>
-                        <h4 class="font-bold text-lg mb-2">無料相談・ヒアリング</h4>
-                        <p class="text-sm text-gray-500">現状の課題を論理的に整理します。</p>
+                        <h4 class="font-bold">公式LINE登録</h4>
+                        <p class="text-sm text-slate-500">まずはLINEから初回相談、または体験セッションをお申し込みください。</p>
                     </div>
                 </div>
-                <div class="flex gap-8 relative pl-8">
-                    <span class="absolute -left-3 top-0 w-6 h-6 bg-slate-200 rounded-full border-4 border-white"></span>
+                <div class="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm reveal">
+                    <div class="w-12 h-12 bg-brand-primary text-white flex items-center justify-center rounded-full font-bold flex-shrink-0">2</div>
                     <div>
-                        <h4 class="font-bold text-lg mb-2">指紋データの撮影・送付</h4>
-                        <p class="text-sm text-gray-500">スマホで撮影したデータを安全に解析へ。</p>
+                        <h4 class="font-bold">指紋データの採取</h4>
+                        <p class="text-sm text-slate-500">スマホで撮影、または専用ツールを用いて指紋情報をデジタル化します。</p>
                     </div>
                 </div>
-                <div class="flex gap-8 relative pl-8">
-                    <span class="absolute -left-3 top-0 w-6 h-6 bg-slate-200 rounded-full border-4 border-white"></span>
+                <div class="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm reveal">
+                    <div class="w-12 h-12 bg-brand-primary text-white flex items-center justify-center rounded-full font-bold flex-shrink-0">3</div>
                     <div>
-                        <h4 class="font-bold text-lg mb-2">解析・プロファイリング</h4>
-                        <p class="text-sm text-gray-500">独自の解析技術で脳のOSを数値化します。</p>
-                    </div>
-                </div>
-                <div class="flex gap-8 relative pl-8">
-                    <span class="absolute -left-3 top-0 w-6 h-6 bg-slate-200 rounded-full border-4 border-white"></span>
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">結果解説（Zoom）</h4>
-                        <p class="text-sm text-gray-500">戦略的なティーチングを実施します。</p>
+                        <h4 class="font-bold">専門家によるZoom解説</h4>
+                        <p class="text-sm text-slate-500">分析結果をもとに、あなたの強みと人生戦略（または教育方針）をマンツーマンでティーチングします。</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-32 bg-slate-50 text-center">
-        <div class="max-w-4xl mx-auto px-6 reveal">
-            <h2 class="text-2xl md:text-4xl mb-8 leading-tight">
-                あなたの脳の「初期設定」を知り、<br>
-                迷いのない人生へ。
-            </h2>
-            <a href="https://line.me" class="inline-block bg-indigo-600 text-white px-12 py-6 font-bold btn-hover tracking-[0.2em] shadow-2xl mb-12">
-                公式LINEで無料相談を予約
-            </a>
-            <p class="text-[10px] text-gray-400 tracking-[0.4em] uppercase">&copy; 2024 指紋プロファイリング®. All Rights Reserved.</p>
+    <!-- Final CTA -->
+    <footer class="bg-white border-t border-slate-100 pt-24 pb-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-brand-dark">指先に刻まれた、<br>あなただけの成功法則を。</h2>
+                <p class="mb-12 text-slate-500">今日、あなたの「脳の取扱説明書」を手に入れませんか？</p>
+                <a href="https://line.me/R/ti/p/%40101jlnls" class="cta-button inline-block bg-brand-primary text-white px-12 py-5 rounded-full font-bold text-lg mb-20">
+                    公式LINEで相談を予約する
+                </a>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-slate-100 text-slate-400 text-sm">
+                <div class="font-bold text-brand-dark">指紋プロファイリング<span class="text-xs">®</span></div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-brand-primary transition-colors">特定商取引法に基づく表記</a>
+                    <a href="#" class="hover:text-brand-primary transition-colors">プライバシーポリシー</a>
+                </div>
+                <div>&copy; 2024 指紋プロファイリング®. All Rights Reserved.</div>
+            </div>
         </div>
-    </section>
+    </footer>
 
     <script>
-        const obs = new IntersectionObserver((entries) => {
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+                header.classList.remove('py-4');
+                header.classList.add('py-2');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.remove('py-2');
+                header.classList.add('py-4');
+            }
+        });
     </script>
 </body>
 </html>
